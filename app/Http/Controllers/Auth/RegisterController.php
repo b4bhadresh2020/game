@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\UserDetail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -45,14 +46,19 @@ class RegisterController extends Controller
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     *
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'birth_day_step' => ['bail', 'required', 'date_format:"d"'],
+            'birth_month_step' => ['bail', 'required', 'date_format:"m"'],
+            'year' => ['bail', 'required', 'date_format:"Y"'],
+            'first_name' => ['bail', 'required', 'string', 'max:255'],
+            'last_name' => ['bail', 'required', 'string', 'max:255'],
+            'phone' => ['bail', 'required', 'phone'],
+            'user_email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'user_password' => ['bail', 'required', 'string', 'min:8'],
         ]);
     }
 
@@ -64,10 +70,31 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        /* echo "<pre>";
+        print_r($data);
+        print_r(json_encode($data['id_step']));
+        die; */
+        $user = User::create([
+            'name' => $data['first_name']. " ". $data['last_name'],
+            'user_email' => $data['user_email'],
+            'password' => Hash::make($data['user_password']),
         ]);
+        
+        UserDetail::create([
+            'user_id'           => $user->id,
+            'first_name'        => $data['first_name'],
+            'last_name'         => $data['last_name'],
+            'phone'             => $data['phone'],
+            'birth_day'         => sprintf('%s-%s-%s', $data['year'], $data['birth_month_step'], $data['birth_day_step']),
+            'country'           => @$data['country'],
+            'city'              => @$data['city'],
+            'postalcode'        => @$data['postalcode'],
+            'identification'    => @json_encode($data['id_step']),
+            'gender'            => @$data['gender'],
+        ]);
+        /* print_r($user->toarray());
+        die; */
+        return $user;
+        
     }
 }
