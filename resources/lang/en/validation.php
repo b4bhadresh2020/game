@@ -128,7 +128,7 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
+    'phone'         => 'Invalid :attribute number.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
