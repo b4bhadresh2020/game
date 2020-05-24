@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         $this->hasOne('App\UserDetail');
     }
+
+    public function teams()
+    {
+        return $this->hasMany('App\Team');
+    }
 }

@@ -42,6 +42,11 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm()
+    {
+        abort(404);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -70,13 +75,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        /* echo "<pre>";
-        print_r($data);
-        print_r(json_encode($data['id_step']));
-        die; */
+        \DB::beginTransaction();
         $user = User::create([
             'name' => $data['first_name']. " ". $data['last_name'],
-            'user_email' => $data['user_email'],
+            'email' => $data['user_email'],
             'password' => Hash::make($data['user_password']),
         ]);
         
@@ -92,8 +94,7 @@ class RegisterController extends Controller
             'identification'    => @json_encode($data['id_step']),
             'gender'            => @$data['gender'],
         ]);
-        /* print_r($user->toarray());
-        die; */
+        \DB::commit();
         return $user;
         
     }
