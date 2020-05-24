@@ -18,3 +18,7 @@ Route::get('/', 'WelcomeController@index')->name('welcome');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/facebook', 'FacebookController@index')->name('facebook');
+Route::get('/facebook_sync', 'FacebookController@synchronize');
+Route::get('/twitter', 'TwitterController@index')->name('twitter');
+Route::get('/twitter_sync', 'TwitterController@synchronize');

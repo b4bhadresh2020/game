@@ -1,0 +1,8 @@
+.feed-border{
+    border : 1px solid #3490dc;
+    border-radius: 5px;
+}
+
+.feed-image{
+    max-width: 250px !important;
+}
