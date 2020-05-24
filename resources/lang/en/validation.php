@@ -129,6 +129,7 @@ return [
     |
     */
     'phone'         => 'Invalid :attribute number.',
+    'alpha_spaces'  => 'The :attribute may only contain letters and spaces.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
