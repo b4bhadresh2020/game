@@ -128,7 +128,8 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
+    'phone'         => 'Invalid :attribute number.',
+    'alpha_spaces'  => 'The :attribute may only contain letters and spaces.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
